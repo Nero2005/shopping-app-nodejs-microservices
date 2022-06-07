@@ -1,13 +1,10 @@
 import mongoose from "mongoose";
 
 const Schema = mongoose.Schema;
-const OrderSchema = new Schema(
+
+const CartSchema = new Schema(
   {
-    orderId: String,
-    customerId: String,
-    amount: Number,
-    status: String,
-    txnId: String,
+    customerId: { type: String },
     items: [
       {
         product: {
@@ -20,7 +17,7 @@ const OrderSchema = new Schema(
           price: { type: Number },
           supplier: { type: String },
         },
-        unit: { type: Number, required: true },
+        unit: { type: Number, require: true },
       },
     ],
   },
@@ -31,8 +28,8 @@ const OrderSchema = new Schema(
       },
     },
     timestamps: true,
-    collection: "order",
+    collection: "cart",
   }
 );
 
-export const OrderModel = mongoose.model("order", OrderSchema);
+export const CartModel = mongoose.model("cart", CartSchema);

@@ -2,15 +2,17 @@ import "dotenv/config";
 import express from "express";
 import cors from "cors";
 import { dbConnection } from "./database/index.js";
-import { customer, products, shopping } from "./api/index.js";
+import { shopping, appEvents } from "./api/index.js";
 
 const app = express();
 
 app.use(express.json());
 app.use(cors());
 
-customer(app);
-products(app);
+appEvents(app);
+
+// customer(app);
+// products(app);
 shopping(app);
 
 const PORT = process.env.PORT || 5000;

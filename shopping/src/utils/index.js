@@ -1,5 +1,6 @@
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
+import axios from "axios";
 
 const APP_SECRET = process.env.JWT_SECRET;
 
@@ -44,4 +45,10 @@ export const formatData = (data) => {
   } else {
     throw new Error("Data Not found!");
   }
+};
+
+export const publishCustomerEvents = async (payload) => {
+  axios.post("http://localhost:8000/customer/app-events", {
+    payload,
+  });
 };

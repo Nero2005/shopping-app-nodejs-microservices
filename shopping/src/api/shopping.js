@@ -1,36 +1,41 @@
 import { ShoppingService } from "../services/shopping-service.js";
-import { CustomerService } from "../services/customer-service.js";
+import {
+  publishCustomerEvents,
+  publishShoppingEvents,
+} from "../utils/index.js";
 import { authToken } from "./middlewares/auth.js";
 
 export const shoppingCtrl = (app) => {
-  app.post("/shopping/order", authToken, async (req, res, next) => {
+  app.post("/order", authToken, async (req, res, next) => {
     const { _id } = req.user;
     const { txnNumber } = req.body;
 
     try {
       const { data } = await ShoppingService.placeOrder({ _id, txnNumber });
+      const payload = await ShoppingService.getOrderPayload(_id, data, "CREATE_ORDER");
+      publishCustomerEvents(payload);
       return res.status(200).json(data);
     } catch (err) {
       next(err);
     }
   });
 
-  app.get("/shopping/orders", authToken, async (req, res, next) => {
+  app.get("/orders", authToken, async (req, res, next) => {
     const { _id } = req.user;
 
     try {
-      const { data } = await CustomerService.getShoppingDetails(_id);
-      return res.status(200).json(data.orders);
+      const { data } = await ShoppingService.getOrders(_id);
+      return res.status(200).json(data);
     } catch (err) {
       next(err);
     }
   });
 
-  app.get("/shopping/cart", authToken, async (req, res, next) => {
+  app.get("/cart", authToken, async (req, res, next) => {
     const { _id } = req.user;
     try {
-      const { data } = await CustomerService.getShoppingDetails(_id);
-      return res.status(200).json(data.cart);
+      const { data } = await ShoppingService.getCart(_id);
+      return res.status(200).json(data);
     } catch (err) {
       next(err);
     }

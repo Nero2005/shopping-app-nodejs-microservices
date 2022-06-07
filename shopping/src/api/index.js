@@ -1,3 +1,2 @@
-export { customerCtrl as customer } from "./customer.js";
-export { productsCtrl as products } from "./products.js";
+export { shoppingAppEvents as appEvents } from "./app-events.js";
 export { shoppingCtrl as shopping } from "./shopping.js";
